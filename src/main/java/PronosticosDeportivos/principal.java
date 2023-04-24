@@ -258,66 +258,89 @@ public class principal {
 				}
 
 				resultaList.add(resulta);
-				
-				System.out.println("===================================");
-				System.out.println(" PUNTAJES ");
+			}
+			System.out.println("===================================");
+			System.out.println(" PUNTAJES ");
 
-				int puntaje = 0;
-				int puntaje2 = 0;
-				String particiPunto1 = null;
-				String particiPunto2 = null;
-				String ronda2 = null;
+			int puntaje = 0;
+			int puntaje2 = 0;
+			String particiPunto1 = null;
+			String particiPunto2 = null;
+			int cuentaRonda = 0; 
 
-				// Comparamos los Resultados con los Pronosticos para asignar puntaje
-				for (int i = 0; i < pronoList.size(); i++) {
+			// Comparamos los Resultados con los Pronosticos para asignar puntaje
+			for (int i = 0; i < pronoList.size(); i++) {
 
-					for (Resultado re : resultaList) {
+				for (Resultado re : resultaList) {
 
-						if (pronoList.get(i).getCombinaRes().equals(re.getConvinaRes())) {// Si la Clave convinada del
+					if (re.getRonda() == pronoList.get(i).getRonda()) { 	// Si los partidos y los
+																			// pronósticos estan en la misma ronda
+
+						if (pronoList.get(i).getCombinaRes().equals(re.getConvinaRes())) {// y Si la Clave combinada
+																							// del
 																							// Pronóstico es = a la
 																							// Clave del Resultado
 
 							if (pronoList.get(i).getNumeroPro() == re.getNumeroPartido()) { // y Si el número de
-																							// Pronóstico es = al número
+																							// Pronóstico es = al
+																							// número
 																							// del partido
 
 								puntaje++;
 								particiPunto1 = pronoList.get(i).getParticipante();
 							}
-							if ((pronoList.get(i).getNumeroPro()) == re.getNumeroPartido() + 4) { // Si el número de
-																									// Pronóstico es =
+							if ((pronoList.get(i).getNumeroPro()) == re.getNumeroPartido() + 4) { // y Si el número de
+																									// Pronóstico es
+																									// =
 																									// al número del
 																									// partido +
-																									// 4(porque son 4
-																									// resultados contra
-																									// 8 pronosticos)
+																									// 4(porque son
+																									// 4
+																									// resultados
+																									// contra
+																									// 8
+																									// pronosticos)
 
 								puntaje2++;
 								particiPunto2 = pronoList.get(i).getParticipante();
 							}
 						}
 					}
-
 				}
+			}
 
-				if ((puntaje == 1 || puntaje == 0) & (particiPunto1 != null)) {// Verificamos si el resultado es plural
-																				// o singular para mostrarlo
-					System.out.println("Acierto de " + particiPunto1 + ": " + puntaje + " punto");
-				} else {
+			if ((puntaje == 1 || puntaje == 0) & (particiPunto1 != null)) {// Verificamos si el resultado es plural
+																			// o singular para mostrarlo
+				System.out.println("Acierto de " + particiPunto1 + ": " + puntaje + " punto");
+			} else if(puntaje>1){
+				
+				if(puntaje==4) {	// Si acierta toda la ronda asignamos punto bonus				
 					System.out.println("Aciertos de " + particiPunto1 + ": " + puntaje + " puntos ");
-				}
-				if ((puntaje2 == 1 || puntaje2 == 0) & (particiPunto2 != null)) {// Verificamos si el resultado es
-																					// plural o singular para mostrarlo
-					System.out.println("Acierto de " + particiPunto2 + ": " + puntaje2 + " punto");
-				} else {
+					System.out.println("Punto bonus ==> " + (puntaje+1) + "puntos");
+				}else {
+					System.out.println("Aciertos de " + particiPunto1 + ": " + puntaje + " puntos ");
+				}				
+			}
+			System.out.println("--------------------------------");	
+			
+			if ((puntaje2 == 1 || puntaje2 == 0) & (particiPunto2 != null)) {// Verificamos si el resultado es
+																				// plural o singular para mostrarlo
+				System.out.println("Acierto de " + particiPunto2 + ": " + puntaje2 + " punto");
+			} else  if(puntaje2>1){
+												
+				if(puntaje2==4) {	// Si acierta toda la ronda asignamos punto bonus				
+					System.out.println("Aciertos de " + particiPunto2 + ": " + puntaje2 + " puntos ");
+					System.out.println("Punto bonus ==> " + (puntaje2+1) + " puntos");
+				}else {
 					System.out.println("Aciertos de " + particiPunto2 + ": " + puntaje2 + " puntos ");
 				}
-
 			}
+
+			// }
 
 			// Cerramos la conexión con la base de datos
 			resultado.close();
-			consulta.close();	
+			consulta.close();
 			conexion.close();
 
 			System.out.println("===================================");
